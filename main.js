@@ -5,6 +5,9 @@
     const chatForm = document.querySelector('#chat-form');
     const messageList = document.querySelector('#message-list');
     const delButton = document.querySelector('.delete')
+    const inputButton = document.querySelector('.message').value
+    const senderButton = document.querySelector('.sender').value
+    
 
     function generateHTML(message) {
         // construct the message html
@@ -26,15 +29,17 @@
                 for(let i = 0; i < data.length; i++){
                     html += generateHTML(data[i]);
                 }
+                
                 messageList.innerHTML = html;
+                // console.log(html);
+
             });
     }
 
     fetchMessages();
     setInterval(fetchMessages, 3000);
-    deleteMessages();
-    
 
+    
     function addMessage(event) {
         event.preventDefault();
         const message = {
@@ -53,20 +58,24 @@
         .then(data => {
             html = generateHTML(data);
             messageList.insertAdjacentHTML('beforeend', html);
+            chatForm.reset();
         }) 
         .catch(error => console.log(error)) 
     }
-    delButton.addEventListener('click',deleteMessages());
+    delButton.addEventListener('click', messageClear);
 
-    chatForm.addEventListener('submit', addMessage);
-
-// })
-    function deleteMessages(id) {
-        // for (let i = 0; i < 330; i++ ){
-        // id = i.toString()
+    chatForm.addEventListener('submit',addMessage);
         
-        // console.log(id);
-           fetch('https://tiny-taco-server.herokuapp.com/Chatty' + "/" + id, {  
+   
+function messageClear() {
+    fetch("https://tiny-taco-server.herokuapp.com/Chatty")
+    .then((response) => response.json())
+    .then((data) =>  deleteMessages(data));
+}
+    function deleteMessages(arr) {
+        for (let i = 0; i < arr.length; i++ ){
+        
+           fetch(`https://tiny-taco-server.herokuapp.com/Chatty'/${arr[i].id}`, {  
                method: 'DELETE',    
            })
            .then (response => {
@@ -76,7 +85,7 @@
                console.log ('DELETED');
            })
         }
-    // }
+    }
 
 //     $submit.addEventListener('click', submitMessage())
 

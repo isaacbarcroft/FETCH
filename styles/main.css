@@ -2,8 +2,27 @@
   display: none;
 }
 
+.container {
+  background-color: deeppink;
+  height: 100vh;
+}
+
 .delete {
   color: red;
+}
+
+h1 {
+  font-family: sans-serif;
+}
+
+.message::placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.sender::placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
 }
 
 ul {
@@ -11,15 +30,28 @@ ul {
 }
 
 .submit {
-  color: #ee068d;
-}
-
-Body {
-  background: url("/Users/isaacbarcroft/Documents/ccs/homework/FETCH/images/chatty.jpeg") 275px 200px no-repeat;
+  color: #4406ee;
 }
 
 h1 {
   text-align: center;
+}
+
+#chat-form {
+  display: flex;
+  justify-content: center;
+}
+
+#message-list {
+  display: flex;
+  justify-content: center;
+  max-height: 100%;
+}
+
+.chat {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
 }
 
 /*# sourceMappingURL=main.css.map */

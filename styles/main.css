@@ -25,10 +25,6 @@ h1 {
   font-size: 1.3em;
 }
 
-ul {
-  list-style: none;
-}
-
 .submit {
   color: #4406ee;
 }
@@ -43,9 +39,11 @@ h1 {
 }
 
 #message-list {
+  list-style: none;
   display: flex;
-  justify-content: center;
   max-height: 100%;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .chat {

@@ -2,9 +2,8 @@
     display: none;
 }
 .container {
-    
     background-color: deeppink;
-    height: 100vh;;
+    height: 100vh;
 }
 .delete {
     color: rgb(255, 0, 0);
@@ -13,24 +12,16 @@ h1 {
     font-family:sans-serif;
 }
 .message::placeholder {
-   
         color: palevioletred;
         font-size: 1.3em;
-      
 }
 .sender::placeholder {
-   
     color: palevioletred;
     font-size: 1.3em;
-  
-}
-ul {
-    list-style: none;
 }
 .submit {
     color: rgb(68, 6, 238);
 }
-
 h1 {
     text-align: center;
 }
@@ -39,11 +30,12 @@ h1 {
     justify-content: center;
 }
 #message-list {
+    list-style: none;
     display: flex;
-    justify-content: center;
     max-height: 100%;
+    flex-direction: column;
+    justify-content: center;
 }
-
 .chat {
 margin-top: 20px;
 display: flex;

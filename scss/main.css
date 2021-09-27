@@ -4,25 +4,93 @@
 
 .container {
   background-color: deeppink;
+  height: 100vh;
 }
 
 .delete {
   color: red;
 }
 
-ul {
-  list-style: none;
+h1 {
+  font-family: sans-serif;
+}
+
+.message::-webkit-input-placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.message:-ms-input-placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.message::-ms-input-placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.message::placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.sender::-webkit-input-placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.sender:-ms-input-placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.sender::-ms-input-placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
+}
+
+.sender::placeholder {
+  color: palevioletred;
+  font-size: 1.3em;
 }
 
 .submit {
-  color: #ee068d;
-}
-
-Body {
-  background: url("/Users/isaacbarcroft/Documents/ccs/homework/FETCH/images/chatty.jpeg") 655px 200px no-repeat;
+  color: #4406ee;
 }
 
 h1 {
   text-align: center;
+}
+
+#chat-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#message-list {
+  list-style: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  max-height: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.chat {
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=main.css.map */

@@ -2,130 +2,154 @@
 
 // (function(){
 
-    const chatForm = document.querySelector('#chat-form');
-    const messageList = document.querySelector('#message-list');
-    const delButton = document.querySelector('.delete')
-    const inputButton = document.querySelector('.message').value
-    const senderButton = document.querySelector('.sender').value
-    const editButton = document.querySelector('.edit')
-    
+const chatForm = document.querySelector('#chat-form');
+const messageList = document.querySelector('#message-list');
+const delButton = document.querySelector('.delete');
+const inputButton = document.querySelector('.message').value;
+const senderButton = document.querySelector('.sender').value;
 
-    function generateHTML(message) {
-        // construct the message html
-        return `
+
+
+function deleteMessage(event) {
+    console.log('delete function')
+    fetch(`https://tiny-taco-server.herokuapp.com/Chatty/${event.target.dataset.id}/`, {
+        method: 'DELETE',
+    })
+        .then(response => console.log(response));
+}
+
+
+
+function generateHTML(message) {
+    // construct the message html
+    console.log(message.id)
+    console.log(message)
+    return `
         <br>
             <li>
-                <p>${message.id}</p>
+            <span><p>${message.username} said</p></span>
                 <p>${message.text}</p>
-                <span>${message.username}</span>
+                <input class="userEdit" type="text" name="user" placeholder="new user">
+                <input class="messageEdit" type="text" name="edit" placeholder="new message">
+                <button class="edit" data-id=${message.id}>Edit Me</button>
+                <button class="deleteButton" data-id=${message.id}>Delete Me</button>
             </li>
         `
-    }
+}
 
-    function fetchMessages() {
-        fetch('https://tiny-taco-server.herokuapp.com/Chatty/')
-            .then(function(response){
-                return response.json()
-            })
-            .then(function(data){
-                let html = "";
-                for(let i = 0; i < data.length; i++){
-                    html += generateHTML(data[i]);
-                }
-                
-                messageList.innerHTML = html;
-                // console.log(html);
-
-            });
-    }
-
-    // fetchMessages;
-    setInterval(fetchMessages, 3000);
-
-    
-    function addMessage(event) {
-        event.preventDefault();
-        const message = {
-            text: event.target.message.value,
-            username: event.target.sender.value,
-        }
-
-        fetch('https://tiny-taco-server.herokuapp.com/Chatty/',{
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(message),
+function fetchMessages(event) {
+    fetch('https://tiny-taco-server.herokuapp.com/Chatty/')
+        .then(function (response) {
+            return response.json()
         })
+        .then(function (data) {
+            let html = "";
+            for (let i = 0; i < data.length; i++) {
+                html += generateHTML(data[i]);
+            }
+            messageList.innerHTML = html;
+        });
+}
+
+// fetchMessages;
+setInterval(fetchMessages, 10000);
+
+
+function addMessage(event) {
+    event.preventDefault();
+    const message = {
+        text: event.target.message.value,
+        username: event.target.sender.value,
+    }
+
+    fetch('https://tiny-taco-server.herokuapp.com/Chatty/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(message),
+    })
         .then(response => response.json())
         .then(data => {
             html = generateHTML(data);
             messageList.insertAdjacentHTML('beforeend', html);
             chatForm.reset();
-        }) 
-        .catch(error => console.log(error)) 
-    }
-    delButton.addEventListener('click', messageClear);
-
-    chatForm.addEventListener('submit', function(){
-        console.log('hit', editButton.value);
-        if (editButton.value) {
-            console.log('hit', editButton.value)
-            editText(editButton.value);
-        } else {
-        addMessage();
-    }
-    });
-
-        
-   
-function messageClear() {
-    fetch("https://tiny-taco-server.herokuapp.com/Chatty")
-    .then((response) => response.json())
-    .then((data) =>  deleteMessages(data));
+        })
+        .catch(error => console.log(error))
 }
-    function deleteMessages(arr) {
-        for (let i = 0; i < arr.length; i++ ){
-        
-           fetch(`https://tiny-taco-server.herokuapp.com/Chatty'/${arr[i].id}`, {  
-               method: 'DELETE',    
-           })
-           .then (response => {
-               if (!response.ok) {
-                   throw new Error('uh oh')
-               }
-               console.log ('DELETED');
-           })
-        }
-    }
-function editText(id){
+chatForm.addEventListener('submit', addMessage);
+
+
+
+
+
+
+// function messageClear() {
+//     fetch("https://tiny-taco-server.herokuapp.com/Chatty")
+//         .then((response) => response.json())
+//         .then((data) => deleteMessages(data));
+// }
+// function deleteMessages(arr) {
+//     for (let i = 0; i < arr.length; i++) {
+
+//         fetch(`https://tiny-taco-server.herokuapp.com/Chatty'/${arr[i].id}`, {
+//             method: 'DELETE',
+//         })
+//             .then(response => {
+//                 if (!response.ok) {
+//                     throw new Error('uh oh')
+//                 }
+//                 console.log('DELETED');
+//             })
+//     }
+// }
+function editText(event, editInput, username) {
+    console.log('input', editInput.target)
     event.preventDefault();
-const message = {
-    id: id,
-    text: event.target.message.value,
-    username: event.target.sender.value,
-}
-console.log(message);
-    fetch(`https://tiny-taco-server.herokuapp.com/Chatty'/${id}`, {
+    console.log('edit',event.target)
+    const message = {
+        username: username,
+        text: editInput,
+    }
+    console.log(message);
+    console.log(event.target.value);
+    fetch(`https://tiny-taco-server.herokuapp.com/Chatty/${event.target.dataset.id}/`, {
         method: 'PUT',
         headers: {
-            'Content-Type':  'application/json',
-        }, 
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify(message),
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        html = generateHTML(data);
+        .then(response => response.json())
+        .then(data => {
+            html = generateHTML(data);
             messageList.insertAdjacentHTML('beforeend', html);
             chatForm.reset();
-    })
+        })
 
-    .then (response => {
-        if(!response.ok){
-            throw new ERROR ('OOPS')
-        }
-        console.log("DELTED")
-        return response.json();
-    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            console.log("DELTED")
+            throw new ERROR('OOPS')
+        })
 }
+
+
+document.body.addEventListener('click', function(event){
+    console.log(event.target)
+    console.log(event.target.dataset.id)
+    if (event.target.classList.contains('deleteButton')){
+        console.log('delete')
+        deleteMessage(event);
+    }
+    else if(event.target.classList.contains('edit')){
+        console.log('edit')
+        const editInput = document.querySelector('.messageEdit');
+        const userEdit = document.querySelector('.userEdit');
+        console.log(editInput)
+        console.log(editInput.value)
+        editText(event, editInput.value, userEdit.value);
+    }
+});

@@ -35,7 +35,7 @@ h1 {
 
 #chat-form {
   display: flex;
-  justify-content: center;
+  justify-content: right;
 }
 
 #message-list {

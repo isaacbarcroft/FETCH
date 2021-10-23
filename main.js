@@ -26,7 +26,7 @@ function generateHTML(message) {
     console.log(message)
     return `
         <br>
-            <li>
+            <li data-id=${message.id}>
             <span><p>${message.username} said</p></span>
                 <p>${message.text}</p>
                 <input class="userEdit" type="text" name="user" placeholder="new user">
@@ -106,12 +106,12 @@ chatForm.addEventListener('submit', addMessage);
 function editText(event, editInput, username) {
     console.log('input', editInput.target)
     event.preventDefault();
-    console.log('edit',event.target)
+    console.log('edit',event.target.dataid)
     const message = {
         username: username,
         text: editInput,
     }
-    console.log(message);
+    console.log({message});
     console.log(event.target.value);
     fetch(`https://tiny-taco-server.herokuapp.com/Chatty/${event.target.dataset.id}/`, {
         method: 'PUT',
@@ -121,11 +121,11 @@ function editText(event, editInput, username) {
         body: JSON.stringify(message),
     })
         .then(response => response.json())
-        .then(data => {
-            html = generateHTML(data);
-            messageList.insertAdjacentHTML('beforeend', html);
-            chatForm.reset();
-        })
+        // .then(data => {
+        //     html = generateHTML(data);
+        //     messageList.insertAdjacentHTML('beforeend', html);
+        //     chatForm.reset();
+        // })
 
         .then(response => {
             if (response.ok) {
@@ -148,8 +148,17 @@ document.body.addEventListener('click', function(event){
         console.log('edit')
         const editInput = document.querySelector('.messageEdit');
         const userEdit = document.querySelector('.userEdit');
-        console.log(editInput)
+        console.log({editInput})
         console.log(editInput.value)
+        console.log({event})
+        const messageId = event.target.dataset.id
+        deleteElement(messageId)
         editText(event, editInput.value, userEdit.value);
     }
 });
+
+function deleteElement (id) {
+    const element = document.querySelector(`[data-id='${id}']`)
+    element.remove()
+    console.log({element})
+}
